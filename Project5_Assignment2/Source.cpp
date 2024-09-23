@@ -66,7 +66,7 @@ int main()
 		std::cout << myvector[i].firstName << myvector[i].lastName << std::endl;
 	}
 #endif
-
+	 
 	return 1;
 }
 
