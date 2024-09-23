@@ -60,6 +60,12 @@ int main()
 
 	readFromFile(filename, myvector); //calls method that will read file
 
+#ifdef _DEBUG
+	for (int i = 0; i < myvector.size(); i++)
+	{
+		std::cout << myvector[i].firstName << myvector[i].lastName << std::endl;
+	}
+#endif
 
 	return 1;
 }
