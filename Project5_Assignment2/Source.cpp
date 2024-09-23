@@ -6,17 +6,19 @@
 
 
 using namespace std;
-
+//#define PRE_RELEASE
 
 struct STUDENT_DATA {
 	std::string firstName;
 	std::string lastName;
+#ifdef PRE_RELEASE
+	std::string email;
+#endif
 };
 
 
 void readFromFile(std::string filename, std::vector<STUDENT_DATA>& myvector)
 {
-
 
 	std::ifstream fin(filename); //opens file
 	if (!fin.is_open())  //file is not open
@@ -34,7 +36,15 @@ void readFromFile(std::string filename, std::vector<STUDENT_DATA>& myvector)
 			std::string firstname, lastname; 
 
 			getline(issLine, firstname, ','); //reads until we reach the first comma
-			getline(issLine, lastname); //value after comma is saved to the last name variable
+
+#ifdef PRE_RELEASE
+			std::string email;
+			getline(issLine, lastname, ',');
+			getline(issLine, email);
+			student.email = email;
+#else
+			getline(issLine, lastname);
+#endif
 
 
 			student.firstName = firstname; //saves the data to the STUDENT_DATA
@@ -51,22 +61,39 @@ void readFromFile(std::string filename, std::vector<STUDENT_DATA>& myvector)
 int main()
 {
 
+#ifdef PRE_RELEASE
+	std::cout << "Application is running pre-release source code" << std::endl;
+#else
+	std::cout << "Application is running standard source code" << std::endl;
+#endif
 
 
 	std::vector<STUDENT_DATA> myvector; //creates the vector
 	std::string filename;
 
-	filename = "StudentData.txt"; //filename for the file that contains the student data
+
+#ifdef PRE_RELEASE
+	filename = "StudentData_Emails.txt";
+#else
+	filename = "StudentData.txt";
+#endif
+
 
 	readFromFile(filename, myvector); //calls method that will read file
+
 
 #ifdef _DEBUG
 	for (int i = 0; i < myvector.size(); i++)
 	{
-		std::cout << myvector[i].firstName << myvector[i].lastName << std::endl;
+		#ifdef PRE_RELEASE
+			std::cout << myvector[i].firstName << myvector[i].lastName << " " << myvector[i].email << std::endl;
+		#else
+			std::cout << myvector[i].firstName << myvector[i].lastName << std::endl;
+		#endif
 	}
 #endif
 	 
+
 	return 1;
 }
 
